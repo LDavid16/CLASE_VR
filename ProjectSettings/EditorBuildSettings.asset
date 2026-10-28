@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/pruebaVR.unity
     guid: 70033fce83cf0f5499ba1e19f4160909
+  - enabled: 1
+    path: Assets/PrevioVR_Luis_Gomez.unity
+    guid: eb10f1f7fedd8db41ada90ae51c754ad
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 5a46763792e7d604cb86424601b9bf23, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: a34fdfcfea1569b4ca1b7568322a0b6a, type: 2}
