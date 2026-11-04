@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: ' Practica2_LuisDavid'
+  productName: ' Practica3_LuisDavid'
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -142,6 +142,9 @@ PlayerSettings:
   bundleVersion: 0.1
   preloadedAssets:
   - {fileID: 11400000, guid: 3496cba66cf660642a724e640a4d2dbd, type: 2}
+  - {fileID: 7966734417066860798, guid: 62291a74bc8b0c941a4bcb5f2bb0b9b0, type: 2}
+  - {fileID: 11400000, guid: 3de0b250fc216764c996ec64c78aff64, type: 2}
+  - {fileID: 2467100751914645967, guid: a34fdfcfea1569b4ca1b7568322a0b6a, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -162,7 +165,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.Gomez.Practica2_Luis
+    Android: com.Gomez.Practica3_Luis
   buildNumber:
     Standalone: 0
     VisionOS: 0

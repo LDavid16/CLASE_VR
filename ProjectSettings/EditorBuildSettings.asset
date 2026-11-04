@@ -8,10 +8,14 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/pruebaVR.unity
     guid: 70033fce83cf0f5499ba1e19f4160909
-  - enabled: 1
+  - enabled: 0
     path: Assets/PrevioVR_Luis_Gomez.unity
     guid: eb10f1f7fedd8db41ada90ae51c754ad
+  - enabled: 1
+    path: Assets/1.unity
+    guid: b600780df576357479182933616db037
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 5a46763792e7d604cb86424601b9bf23, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: 3de0b250fc216764c996ec64c78aff64, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: a34fdfcfea1569b4ca1b7568322a0b6a, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 62291a74bc8b0c941a4bcb5f2bb0b9b0, type: 2}
