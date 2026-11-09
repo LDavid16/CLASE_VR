@@ -1,88 +1,75 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(CharacterController))]
 public class Move : MonoBehaviour
 {
-    [Header("Movimiento")]
-    public float speed = 5f;
-    public float runMultiplier = 3f;
+    public float speed;
+    public float runMultiplier;
+    public float gravity = -9.81f;
+    public float jumHeigth;
+    public float rotationSpeed;
 
-    [Header("Rotación")]
-    public float rotationSpeed = 120f;
-
-    [Header("Salto por Código (Sin Gravedad)")]
-    public float jumHeigth = 1f;
-    public float jumpDuration = 0.4f;
-    private bool isJumping = false;
-
-    private CharacterController controller;
+    private CharacterController characterController;
+    private Vector3 velocity;
+    private bool isRunning = false;
+    private bool isGrounded;
     private PlayerInputAction inputActions;
     private Vector2 moveInput;
-    private Vector2 rotateInput;
-    private bool isRunning;
+    private float rotateInput;
 
     private void Awake()
     {
-        controller = GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();
         inputActions = new PlayerInputAction();
-
         inputActions.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled += ctx => moveInput = Vector2.zero;
-
-        inputActions.Player.Rotate.performed += ctx => rotateInput = ctx.ReadValue<Vector2>();
-        inputActions.Player.Rotate.canceled += ctx => rotateInput = Vector2.zero;
-
         inputActions.Player.Run.performed += ctx => isRunning = true;
         inputActions.Player.Run.canceled += ctx => isRunning = false;
+        inputActions.Player.Jump.performed += ctx => Jump();
 
-        inputActions.Player.Jump.performed += ctx => OnJump();
+        inputActions.Player.Rotate.performed += ctx => rotateInput = ctx.ReadValue<float>();
+        inputActions.Player.Rotate.canceled += ctx => rotateInput = 0;
     }
 
-    private void OnEnable() => inputActions.Player.Enable();
-    private void OnDisable() => inputActions.Player.Disable();
-
-    private void Update()
+    void OnEnable()
     {
-        // 1. Movimiento Horizontal
+        inputActions.Enable();
+    }
+
+    void OnDisable()
+    {
+        inputActions.Disable();
+    }
+
+    void Jump()
+    {
+        if (isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumHeigth * -2f * gravity);
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        isGrounded = characterController.isGrounded;
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2;
+        }
+
+        Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
+        move = transform.TransformDirection(move);
         float currentSpeed = isRunning ? speed * runMultiplier : speed;
-        Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
-        controller.Move(move * currentSpeed * Time.deltaTime);
+        characterController.Move(move * currentSpeed * Time.deltaTime);
+        float rotation = rotateInput * rotationSpeed * Time.deltaTime;
+        transform.Rotate(0, rotation, 0);
 
-        // 2. Rotación de Cámara
-        if (Mathf.Abs(rotateInput.x) > 0.01f)
-        {
-            transform.Rotate(Vector3.up, rotateInput.x * rotationSpeed * Time.deltaTime);
-        }
-    }
-
-    private void OnJump()
-    {
-        if (!isJumping)
-        {
-            StartCoroutine(JumpRoutine());
-        }
-    }
-
-    private IEnumerator JumpRoutine()
-    {
-        isJumping = true;
-        float timer = 0f;
-        Vector3 startPosition = transform.position;
-
-        while (timer < jumpDuration)
-        {
-            timer += Time.deltaTime;
-            float progress = timer / jumpDuration;
-
-            float heightOffset = Mathf.Sin(progress * Mathf.PI) * jumHeigth;
-            Vector3 targetPosition = new Vector3(startPosition.x, startPosition.y + heightOffset, startPosition.z);
-            Vector3 verticalMove = targetPosition - transform.position;
-
-            controller.Move(new Vector3(0, verticalMove.y, 0));
-            yield return null;
-        }
-
-        isJumping = false;
+        // Aplicar la aceleración de la gravedad y mover en Y
+        velocity.y += gravity * Time.deltaTime;
+        characterController.Move(velocity * Time.deltaTime);
     }
 }
